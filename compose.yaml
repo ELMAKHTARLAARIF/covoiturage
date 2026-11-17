@@ -1,1 +1,16 @@
-services: { }
+services:
+  postgres:
+    image: postgres:18
+    container_name: covoiturage_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: covoiturage_db
+      POSTGRES_USER: laa
+      POSTGRES_PASSWORD: laarif+osb2002
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql
+
+volumes:
+  pgdata:
