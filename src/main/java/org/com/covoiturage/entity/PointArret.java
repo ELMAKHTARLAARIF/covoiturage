@@ -23,7 +23,6 @@ public class PointArret {
 
     @Column(nullable = false) private String ville;
 
-    // 0 = departure
     @Column(nullable = false) private int ordre;
 
     @Column(name = "heure_passage", nullable = false)
@@ -32,7 +31,6 @@ public class PointArret {
     @Column(name = "prix_depuis_depart", nullable = false, precision = 10, scale = 2)
     private BigDecimal prixDepuisDepart;
 
-    /** Price of one seat from this stop (boarding) to the given stop (drop-off). */
     public BigDecimal prixVers(PointArret descente) {
         return descente.getPrixDepuisDepart().subtract(this.prixDepuisDepart);
     }

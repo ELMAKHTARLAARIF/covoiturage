@@ -16,5 +16,7 @@ public abstract class User {
  @Column(nullable = false) private String nom;
  @Column(nullable = false) private String prenom;
  @Column(nullable = false, unique = true) private String email;
+ @Column(nullable = false) private String password;
+ @Column(nullable = false) private String numeroPermis;
  @Column(nullable = false) private String telephone;
 }

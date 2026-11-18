@@ -19,7 +19,6 @@ public class Reservation {
     @JoinColumn(name = "passager_id", nullable = false)
     private Passager passager;
 
-    // the trip is derived: see getTrajet()
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "point_montee_id", nullable = false)
     private PointArret pointMontee;
