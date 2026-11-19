@@ -78,9 +78,9 @@ public class UserController {
         return passagerService.update(id, request);
     }
 
-    @GetMapping("/passagers/{id}/reservations")
-    public List<ReservationResponse> historicReservations(@PathVariable Long id) {
-        return passagerService.historicReservations(id);
-    }
+//    @GetMapping("/passagers/{id}/reservations")
+//    public List<ReservationResponse> historicReservations(@PathVariable Long id) {
+//        return passagerService.historicReservations(id);
+//    }
     
 }
