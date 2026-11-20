@@ -1,7 +1,7 @@
 package org.com.covoiturage.service;
 
-import org.com.covoiturage.DTOs.ConducteurRequest;
-import org.com.covoiturage.DTOs.ConducteurResponse;
+import org.com.covoiturage.DTOs.Conducteur.ConducteurRequest;
+import org.com.covoiturage.DTOs.Conducteur.ConducteurResponse;
 
 import java.util.List;
 

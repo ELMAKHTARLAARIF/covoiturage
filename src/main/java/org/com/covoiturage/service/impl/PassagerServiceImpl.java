@@ -2,8 +2,9 @@ package org.com.covoiturage.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.com.covoiturage.DTOs.PassagerRequest;
-import org.com.covoiturage.DTOs.PassagerResponse;
+import org.com.covoiturage.DTOs.Passager.PassagerRequest;
+import org.com.covoiturage.DTOs.Passager.PassagerResponse;
+import org.com.covoiturage.DTOs.Reservation.ReservationResponse;
 import org.com.covoiturage.entity.Passager;
 import org.com.covoiturage.exception.BusinessRuleException;
 import org.com.covoiturage.exception.ResourceNotFoundException;

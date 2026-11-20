@@ -1,4 +1,4 @@
-package org.com.covoiturage.DTOs;
+package org.com.covoiturage.DTOs.Trajet;
 
 import org.com.covoiturage.enums.StatutReservation;
 

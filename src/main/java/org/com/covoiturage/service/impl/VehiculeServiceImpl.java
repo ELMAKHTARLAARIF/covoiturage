@@ -2,8 +2,8 @@ package org.com.covoiturage.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.com.covoiturage.DTOs.VehiculeRequest;
-import org.com.covoiturage.DTOs.VehiculeResponse;
+import org.com.covoiturage.DTOs.Vehicule.VehiculeRequest;
+import org.com.covoiturage.DTOs.Vehicule.VehiculeResponse;
 import org.com.covoiturage.entity.Conducteur;
 import org.com.covoiturage.entity.Vehicule;
 import org.com.covoiturage.exception.BusinessRuleException;

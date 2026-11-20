@@ -1,9 +1,5 @@
 package org.com.covoiturage.exception;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
-
-@ResponseStatus(HttpStatus.CONFLICT)
-public class BusinessRuleException extends RuntimeException {
+public class BusinessRuleException extends RuntimeException {          // 409
     public BusinessRuleException(String message) { super(message); }
 }

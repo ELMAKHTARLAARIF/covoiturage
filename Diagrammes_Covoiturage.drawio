@@ -1,6 +1,6 @@
 <mxfile host="Electron" pages="3">
   <diagram name="1 - Diagramme de classes" id="cls1">
-    <mxGraphModel dx="1610" dy="916" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1300" pageHeight="1000" math="0" shadow="0">
+    <mxGraphModel dx="1722" dy="980" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1300" pageHeight="1000" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -31,7 +31,7 @@
         <mxCell id="trajet" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resize=0;collapsible=0;marginBottom=0;html=1;align=center;whiteSpace=wrap;fillColor=#e1d5e7;strokeColor=#9673a6;" value="&lt;b&gt;Trajet&lt;/b&gt;" vertex="1">
           <mxGeometry height="242" width="240" x="400" y="480" as="geometry" />
         </mxCell>
-        <mxCell id="trajet_a" parent="trajet" style="text;strokeColor=none;fillColor=#ffffff;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;rotatable=0;html=1;whiteSpace=wrap;" value="- id: Long&lt;br&gt;- villeDepart: String&lt;br&gt;- villeArrivee: String&lt;br&gt;- dateDepart: LocalDateTime&lt;br&gt;- placesProposees: int&lt;br&gt;- statut: StatutTrajet&lt;br&gt;/ conducteur: Conducteur&lt;br&gt;/ placesRestantes: int" vertex="1">
+        <mxCell id="trajet_a" parent="trajet" style="text;strokeColor=none;fillColor=#ffffff;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;rotatable=0;html=1;whiteSpace=wrap;" value="- id: Long&lt;br&gt;- villeDepart: String&lt;br&gt;- villeArrivee: String&lt;br&gt;- dateDepart: LocalDateTime&lt;br&gt;- placesProposees: int&lt;br&gt;- statut: StatutTrajet&lt;br&gt;/ placesRestantes: int" vertex="1">
           <mxGeometry height="168" width="240" y="26" as="geometry" />
         </mxCell>
         <mxCell id="trajet_m" parent="trajet" style="text;strokeColor=#9673a6;fillColor=#ffffff;align=left;verticalAlign=top;spacingLeft=6;overflow=hidden;rotatable=0;html=1;whiteSpace=wrap;" value="+ addPointArret(p: PointArret)&lt;br&gt;+ estFinal(): boolean" vertex="1">

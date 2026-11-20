@@ -1,9 +1,9 @@
 package org.com.covoiturage.mapper;
 
-import org.com.covoiturage.DTOs.ConducteurRequest;
-import org.com.covoiturage.DTOs.ConducteurResponse;
-import org.com.covoiturage.DTOs.PassagerRequest;
-import org.com.covoiturage.DTOs.PassagerResponse;
+import org.com.covoiturage.DTOs.Conducteur.ConducteurRequest;
+import org.com.covoiturage.DTOs.Conducteur.ConducteurResponse;
+import org.com.covoiturage.DTOs.Passager.PassagerRequest;
+import org.com.covoiturage.DTOs.Passager.PassagerResponse;
 import org.com.covoiturage.entity.Conducteur;
 import org.com.covoiturage.entity.Passager;
 import org.mapstruct.*;
@@ -12,7 +12,8 @@ import org.mapstruct.*;
 
 public interface UserMapper {
     @BeanMapping(builder = @Builder(disableBuilder = true))
-    @Mapping(target = "id",ignore = true)
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "password", ignore = true)
     Conducteur toConducteur(ConducteurRequest request);
 
     @Mapping(target = "id",ignore = true)
@@ -22,6 +23,7 @@ public interface UserMapper {
 
     @BeanMapping(builder = @Builder(disableBuilder = true))
     @Mapping(target = "id",ignore = true)
+    @Mapping(target = "password", ignore = true)
     Passager toPassager(PassagerRequest request);
 
     @Mapping(target = "id",ignore = true)

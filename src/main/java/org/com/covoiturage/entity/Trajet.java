@@ -38,9 +38,6 @@ public class Trajet {
         return vehicule.getConducteur();
     }
 
-    public boolean estFinal() {
-        return statut == StatutTrajet.TERMINE || statut == StatutTrajet.ANNULE;
-    }
 
     public void addPointArret(PointArret p) {
         p.setTrajet(this);

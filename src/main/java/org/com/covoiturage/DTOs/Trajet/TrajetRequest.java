@@ -1,9 +1,10 @@
-package org.com.covoiturage.DTOs;
+package org.com.covoiturage.DTOs.Trajet;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import org.com.covoiturage.DTOs.PointArret.PointArretRequest;
 
 import java.util.List;
 

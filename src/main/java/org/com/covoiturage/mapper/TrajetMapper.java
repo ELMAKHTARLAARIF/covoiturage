@@ -1,9 +1,9 @@
 package org.com.covoiturage.mapper;
 
-import org.com.covoiturage.DTOs.PointArretRequest;
-import org.com.covoiturage.DTOs.PointArretResponse;
-import org.com.covoiturage.DTOs.TrajetReservationResponse;
-import org.com.covoiturage.DTOs.TrajetResponse;
+import org.com.covoiturage.DTOs.PointArret.PointArretRequest;
+import org.com.covoiturage.DTOs.PointArret.PointArretResponse;
+import org.com.covoiturage.DTOs.Trajet.TrajetReservationResponse;
+import org.com.covoiturage.DTOs.Trajet.TrajetResponse;
 import org.com.covoiturage.entity.PointArret;
 import org.com.covoiturage.entity.Reservation;
 import org.com.covoiturage.entity.Trajet;

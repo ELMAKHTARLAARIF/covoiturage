@@ -1,4 +1,4 @@
-package org.com.covoiturage.DTOs;
+package org.com.covoiturage.DTOs.PointArret;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

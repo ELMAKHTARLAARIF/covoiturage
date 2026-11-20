@@ -1,5 +1,6 @@
-package org.com.covoiturage.DTOs;
+package org.com.covoiturage.DTOs.Trajet;
 
+import org.com.covoiturage.DTOs.PointArret.PointArretResponse;
 import org.com.covoiturage.enums.StatutTrajet;
 
 import java.time.LocalDateTime;

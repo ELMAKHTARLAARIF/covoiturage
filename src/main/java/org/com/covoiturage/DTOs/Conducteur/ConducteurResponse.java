@@ -1,4 +1,4 @@
-package org.com.covoiturage.DTOs;
+package org.com.covoiturage.DTOs.Conducteur;
 
 public record ConducteurResponse (Long id,String nom,String prenom,String email,String telephone,String numeroPermis) {
 }

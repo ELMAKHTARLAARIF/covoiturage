@@ -1,7 +1,8 @@
 package org.com.covoiturage.service;
 
-import org.com.covoiturage.DTOs.PassagerRequest;
-import org.com.covoiturage.DTOs.PassagerResponse;
+import org.com.covoiturage.DTOs.Passager.PassagerRequest;
+import org.com.covoiturage.DTOs.Passager.PassagerResponse;
+import org.com.covoiturage.DTOs.Reservation.ReservationResponse;
 
 import java.util.List;
 

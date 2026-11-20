@@ -1,8 +1,8 @@
 package org.com.covoiturage.service;
 
-import org.com.covoiturage.DTOs.TrajetRequest;
-import org.com.covoiturage.DTOs.TrajetReservationResponse;
-import org.com.covoiturage.DTOs.TrajetResponse;
+import org.com.covoiturage.DTOs.Trajet.TrajetRequest;
+import org.com.covoiturage.DTOs.Trajet.TrajetReservationResponse;
+import org.com.covoiturage.DTOs.Trajet.TrajetResponse;
 
 import java.util.List;
 

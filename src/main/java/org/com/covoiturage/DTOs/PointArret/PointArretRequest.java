@@ -1,4 +1,4 @@
-package org.com.covoiturage.DTOs;
+package org.com.covoiturage.DTOs.PointArret;
 
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;

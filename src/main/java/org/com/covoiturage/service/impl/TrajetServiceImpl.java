@@ -2,10 +2,10 @@ package org.com.covoiturage.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.com.covoiturage.DTOs.PointArretRequest;
-import org.com.covoiturage.DTOs.TrajetRequest;
-import org.com.covoiturage.DTOs.TrajetReservationResponse;
-import org.com.covoiturage.DTOs.TrajetResponse;
+import org.com.covoiturage.DTOs.PointArret.PointArretRequest;
+import org.com.covoiturage.DTOs.Trajet.TrajetRequest;
+import org.com.covoiturage.DTOs.Trajet.TrajetReservationResponse;
+import org.com.covoiturage.DTOs.Trajet.TrajetResponse;
 import org.com.covoiturage.entity.PointArret;
 import org.com.covoiturage.entity.Reservation;
 import org.com.covoiturage.entity.Trajet;
@@ -46,30 +46,30 @@ public class TrajetServiceImpl implements TrajetService {
     @Transactional
     public TrajetResponse publish(Long conducteurId, TrajetRequest request) {
         if (!conducteurRepository.existsById(conducteurId)) {
-            log.warn("Conducteur introuvable : id={}", conducteurId);
-            throw new ResourceNotFoundException("Conducteur introuvable avec l'id " + conducteurId);
+            log.warn("Driver not found: id={}", conducteurId);
+            throw new ResourceNotFoundException("Driver not found with id " + conducteurId);
         }
 
         Vehicule vehicule = vehiculeRepository.findById(request.vehiculeId()).orElseThrow(() -> {
-            log.warn("Véhicule introuvable : id={}", request.vehiculeId());
-            return new ResourceNotFoundException("Véhicule introuvable avec l'id " + request.vehiculeId());
+            log.warn("Vehicle not found: id={}", request.vehiculeId());
+            return new ResourceNotFoundException("Vehicle not found with id " + request.vehiculeId());
         });
 
-        // scenario 8: a driver can only publish with his own vehicles
+        // Scenario 8: A driver can only publish a trip using their own vehicles
         if (!vehicule.getConducteur().getId().equals(conducteurId)) {
-            log.warn("Publication refusée : le véhicule {} n'appartient pas au conducteur {}", vehicule.getId(), conducteurId);
-            throw new ForbiddenException("Le véhicule " + vehicule.getId() + " n'appartient pas au conducteur " + conducteurId);
+            log.warn("Publication denied: vehicle {} does not belong to driver {}", vehicule.getId(), conducteurId);
+            throw new ForbiddenException("Vehicle " + vehicule.getId() + " does not belong to driver " + conducteurId);
         }
 
-        // scenario 7: seats must not exceed the vehicle capacity
+        // Scenario 7: The number of proposed seats must not exceed vehicle capacity
         if (request.placesProposees() > vehicule.getCapacite()) {
-            throw invalid("Le nombre de places proposées (" + request.placesProposees() + ") dépasse la capacité du véhicule (" + vehicule.getCapacite() + ")");
+            throw invalid("The number of proposed seats (" + request.placesProposees() + ") exceeds vehicle capacity (" + vehicule.getCapacite() + ")");
         }
 
         validateStops(request.pointsArret());
 
         Trajet saved = trajetRepository.save(buildTrajet(vehicule, request));
-        log.info("Trajet publié : id={}, {} -> {}, conducteurId={}", saved.getId(), saved.getVilleDepart(), saved.getVilleArrivee(), conducteurId);
+        log.info("Trip published: id={}, {} -> {}, driverId={}", saved.getId(), saved.getVilleDepart(), saved.getVilleArrivee(), conducteurId);
         return toResponse(saved);
     }
 
@@ -78,8 +78,8 @@ public class TrajetServiceImpl implements TrajetService {
     @Transactional(readOnly = true)
     public TrajetResponse getDetails(Long trajetId) {
         Trajet trajet = trajetRepository.findDetailById(trajetId).orElseThrow(() -> {
-            log.warn("Trajet introuvable : id={}", trajetId);
-            return new ResourceNotFoundException("Trajet introuvable avec l'id " + trajetId);
+            log.warn("Trip not found: id={}", trajetId);
+            return new ResourceNotFoundException("Trip not found with id " + trajetId);
         });
         return toResponse(trajet);
     }
@@ -102,15 +102,15 @@ public class TrajetServiceImpl implements TrajetService {
         checkOwner(trajet, conducteurId);
         ensureNotFinal(trajet);
 
-        // scenario 9: only after the departure time
+        // Scenario 9: A trip can only be completed after its departure time (!completed 9bel ma tbda !!!)
         if (LocalDateTime.now().isBefore(trajet.getDateDepart())) {
-            log.warn("Terminaison refusée : le trajet {} n'a pas encore commencé ({})", trajetId, trajet.getDateDepart());
-            throw new BusinessRuleException("Impossible de terminer le trajet avant son heure de départ (" + trajet.getDateDepart() + ")");
+            log.warn("Completion denied: trip {} has not started yet ({})", trajetId, trajet.getDateDepart());
+            throw new BusinessRuleException("Cannot complete the trip before its departure time (" + trajet.getDateDepart() + ")");
         }
 
         trajet.setStatut(StatutTrajet.TERMINE);
         Trajet saved = trajetRepository.save(trajet);
-        log.info("Trajet terminé : id={}, conducteurId={}", trajetId, conducteurId);
+        log.info("Trip completed: id={}, driverId={}", trajetId, conducteurId);
         return toResponse(saved);
     }
 
@@ -122,15 +122,15 @@ public class TrajetServiceImpl implements TrajetService {
         checkOwner(trajet, conducteurId);
         ensureNotFinal(trajet);
 
-        // scenario 11: the trip and its reservations succeed or fail together
+        // Scenario 11: The trip and its reservations succeed or fail together
         List<Reservation> confirmed = reservationRepository.findByTrajetIdAndStatut(trajetId, StatutReservation.CONFIRMEE);
-        confirmed.forEach(Reservation::annuler);
-        reservationRepository.saveAll(confirmed);
+        confirmed.forEach(Reservation::annuler);  // make the reservation Confirmer to  annuler because Trajet will be cancled
+        reservationRepository.saveAll(confirmed); // save all reservation annuler
 
         trajet.setStatut(StatutTrajet.ANNULE);
         trajetRepository.save(trajet);
 
-        log.info("Trajet annulé : id={}, réservations annulées={}", trajetId, confirmed.size());
+        log.info("Trip cancelled: id={}, cancelled reservations={}", trajetId, confirmed.size());
     }
 
 
@@ -139,37 +139,36 @@ public class TrajetServiceImpl implements TrajetService {
         PointArretRequest first = stops.get(0);
         PointArretRequest last = stops.get(stops.size() - 1);
 
-        Trajet trajet = Trajet.builder().vehicule(vehicule).villeDepart(first.ville().trim())          // first stop = departure
-                .villeArrivee(last.ville().trim())          // last stop = arrival
-                .dateDepart(first.heurePassage()).placesProposees(request.placesProposees()).statut(StatutTrajet.PUBLIE).build();
-
+        Trajet trajet = Trajet.builder().vehicule(vehicule).villeDepart(first.ville().trim()).villeArrivee(last.ville().trim()).dateDepart(first.heurePassage()).placesProposees(request.placesProposees()).statut(StatutTrajet.PUBLIE).build();
+        // create pointArret for each city
         for (int i = 0; i < stops.size(); i++) {
             PointArretRequest stop = stops.get(i);
             PointArret point = trajetMapper.toEntity(stop);
             point.setOrdre(i);                                              // 0 = departure
             point.setVille(stop.ville().trim());
             point.setPrixDepuisDepart(stop.prixDepuisDepart().setScale(2, RoundingMode.HALF_UP));
-            trajet.addPointArret(point);                                    // sets point.trajet
+            trajet.addPointArret(point);                                    // Sets point.trajet
         }
         return trajet;
     }
 
     private void validateStops(List<PointArretRequest> stops) {
         if (stops == null || stops.size() < 2) {
-            throw invalid("Un trajet doit avoir au moins deux points d'arrêt");
+            throw invalid("A trip must have at least two stops");
         }
 
         if (!stops.get(0).heurePassage().isAfter(LocalDateTime.now())) {
-            throw invalid("Le départ doit être dans le futur");
+            throw invalid("Departure must be in the future");
         }
 
+        // Each city must be unique, a city cannot appear twice on the route
         long distinctCities = stops.stream().map(s -> s.ville().trim().toLowerCase()).distinct().count();
         if (distinctCities != stops.size()) {
-            throw invalid("Une ville ne peut apparaître qu'une seule fois sur le parcours");
+            throw invalid("A city cannot appear more than once on the route");
         }
 
         if (stops.get(0).prixDepuisDepart().compareTo(BigDecimal.ZERO) != 0) {
-            throw invalid("Le prix depuis le départ doit valoir 0 au premier point");
+            throw invalid("The price from departure must be 0 at the first stop");
         }
 
         for (int i = 1; i < stops.size(); i++) {
@@ -177,36 +176,36 @@ public class TrajetServiceImpl implements TrajetService {
             PointArretRequest current = stops.get(i);
 
             if (!current.heurePassage().isAfter(previous.heurePassage())) {
-                throw invalid("Les heures de passage doivent être strictement croissantes (point " + i + " : " + current.ville() + ")");
+                throw invalid("Stop times must be strictly increasing (stop " + i + ": " + current.ville() + ")");
             }
             if (current.prixDepuisDepart().compareTo(previous.prixDepuisDepart()) <= 0) {
-                throw invalid("Les prix depuis le départ doivent être strictement croissants (point " + i + " : " + current.ville() + ")");
+                throw invalid("Prices from departure must be strictly increasing (stop " + i + ": " + current.ville() + ")");
             }
         }
     }
 
     private Trajet findTrajet(Long id) {
         return trajetRepository.findById(id).orElseThrow(() -> {
-            log.warn("Trajet introuvable : id={}", id);
-            return new ResourceNotFoundException("Trajet introuvable avec l'id " + id);
+            log.warn("Trip not found: id={}", id);
+            return new ResourceNotFoundException("Trip not found with id " + id);
         });
     }
 
     private void checkOwner(Trajet trajet, Long conducteurId) {
         if (!trajet.getConducteur().getId().equals(conducteurId)) {
-            log.warn("Accès refusé : le conducteur {} n'est pas propriétaire du trajet {}", conducteurId, trajet.getId());
-            throw new ForbiddenException("Le trajet " + trajet.getId() + " n'appartient pas au conducteur " + conducteurId);
+            log.warn("Access denied: driver {} is not the owner of trip {}", conducteurId, trajet.getId());
+            throw new ForbiddenException("Trip " + trajet.getId() + " does not belong to driver " + conducteurId);
         }
     }
 
     private void ensureNotFinal(Trajet trajet) {
-        if (trajet.estFinal()) {
-            log.warn("Modification refusée : le trajet {} est déjà {}", trajet.getId(), trajet.getStatut());
-            throw new BusinessRuleException("Le trajet " + trajet.getId() + " est déjà " + trajet.getStatut() + " : aucune modification possible");
+        if (trajet.getStatut() == StatutTrajet.TERMINE || trajet.getStatut() == StatutTrajet.ANNULE) {
+            log.warn("Modification denied: trip {} is already {}", trajet.getId(), trajet.getStatut());
+            throw new BusinessRuleException("Trip " + trajet.getId() + " is already " + trajet.getStatut() + ": no further modifications are allowed");
         }
     }
 
-    // remaining seats are calculated, never stored
+    // Remaining seats are calculated, never stored    (المقاعد المتبقية)
     private int remainingSeats(Trajet trajet) {
         Long booked = reservationRepository.sumPlacesByTrajetAndStatut(trajet.getId(), StatutReservation.CONFIRMEE);
         return trajet.getPlacesProposees() - booked.intValue();
@@ -217,7 +216,7 @@ public class TrajetServiceImpl implements TrajetService {
     }
 
     private InvalidRequestException invalid(String message) {
-        log.warn("Publication refusée : {}", message);
+        log.warn("Trip publication denied: {}", message);
         return new InvalidRequestException(message);
     }
 }

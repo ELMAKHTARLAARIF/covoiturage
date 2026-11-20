@@ -1,7 +1,7 @@
 package org.com.covoiturage.mapper;
 
-import org.com.covoiturage.DTOs.VehiculeRequest;
-import org.com.covoiturage.DTOs.VehiculeResponse;
+import org.com.covoiturage.DTOs.Vehicule.VehiculeRequest;
+import org.com.covoiturage.DTOs.Vehicule.VehiculeResponse;
 import org.com.covoiturage.entity.Vehicule;
 import org.mapstruct.*;
 

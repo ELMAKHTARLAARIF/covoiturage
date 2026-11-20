@@ -1,4 +1,4 @@
-package org.com.covoiturage.DTOs;
+package org.com.covoiturage.DTOs.Vehicule;
 
 import jakarta.validation.constraints.*;
 

@@ -3,7 +3,11 @@ package org.com.covoiturage.controller;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.com.covoiturage.DTOs.*;
+import org.com.covoiturage.DTOs.Conducteur.ConducteurRequest;
+import org.com.covoiturage.DTOs.Conducteur.ConducteurResponse;
+import org.com.covoiturage.DTOs.Passager.PassagerRequest;
+import org.com.covoiturage.DTOs.Passager.PassagerResponse;
+import org.com.covoiturage.DTOs.Reservation.ReservationResponse;
 import org.com.covoiturage.service.ConducteurService;
 import org.com.covoiturage.service.PassagerService;
 import org.springframework.http.HttpStatus;
@@ -78,9 +82,9 @@ public class UserController {
         return passagerService.update(id, request);
     }
 
-//    @GetMapping("/passagers/{id}/reservations")
-//    public List<ReservationResponse> historicReservations(@PathVariable Long id) {
-//        return passagerService.historicReservations(id);
-//    }
+    @GetMapping("/passagers/{id}/reservations")
+    public List<ReservationResponse> historicReservations(@PathVariable Long id) {
+        return passagerService.historicReservations(id);
+    }
     
 }

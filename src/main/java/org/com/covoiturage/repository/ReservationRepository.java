@@ -25,7 +25,6 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 
 
     // used by trajet service
-    
 
     // seats already booked on a trip
     @Query("""
@@ -53,4 +52,15 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
        """)
     List<Reservation> findByTrajetIdAndStatut(@Param("trajetId") Long trajetId,
                                               @Param("statut") StatutReservation statut);
+
+
+    @Query("""
+       SELECT COUNT(r) > 0 FROM Reservation r
+       WHERE r.passager.id = :passagerId
+         AND r.pointMontee.trajet.id = :trajetId
+         AND r.statut = :statut
+       """)
+    boolean hasReservation(@Param("passagerId") Long passagerId,
+                           @Param("trajetId") Long trajetId,
+                           @Param("statut") StatutReservation statut);
 }
