@@ -124,7 +124,7 @@ public class TrajetServiceImpl implements TrajetService {
 
         // Scenario 11: The trip and its reservations succeed or fail together
         List<Reservation> confirmed = reservationRepository.findByTrajetIdAndStatut(trajetId, StatutReservation.CONFIRMEE);
-        confirmed.forEach(Reservation::annuler);  // make the reservation Confirmer to  annuler because Trajet will be cancled
+        confirmed.forEach(r -> r.setStatut(StatutReservation.ANNULEE));  // make the reservation Confirmer to  annuler because Trajet will be cancled
         reservationRepository.saveAll(confirmed); // save all reservation annuler
 
         trajet.setStatut(StatutTrajet.ANNULE);
