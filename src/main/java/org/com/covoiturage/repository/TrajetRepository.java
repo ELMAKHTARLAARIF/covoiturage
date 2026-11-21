@@ -23,7 +23,7 @@ public interface TrajetRepository extends JpaRepository<Trajet, Long> {
            """)
     Optional<Trajet> findDetailById(@Param("id") Long id);
 
-    // used by reservation service
+    // used by reservation serviceTest
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("SELECT t FROM Trajet t WHERE t.id = :id")
     Optional<Trajet> findByIdForUpdate(@Param("id") Long id);

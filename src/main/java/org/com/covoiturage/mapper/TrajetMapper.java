@@ -15,12 +15,12 @@ public interface TrajetMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "trajet", ignore = true)   // set by Trajet.addPointArret()
-    @Mapping(target = "ordre", ignore = true)    // set by the service from the list position
+    @Mapping(target = "ordre", ignore = true)    // set by the serviceTest from the list position
     PointArret toEntity(PointArretRequest request);
 
     PointArretResponse toResponse(PointArret pointArret);
 
-    // placesRestantes is calculated by the service, so it comes in as a parameter
+    // placesRestantes is calculated by the serviceTest, so it comes in as a parameter
     @Mapping(target = "id", source = "trajet.id")
     @Mapping(target = "conducteurId", source = "trajet.conducteur.id")
     @Mapping(target = "conducteurNom", source = "trajet.conducteur.nom")

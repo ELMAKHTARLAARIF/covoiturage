@@ -114,7 +114,6 @@ public class ReservationServiceImpl implements ReservationService {
             throw new ForbiddenException("La réservation " + reservationId + " n'appartient pas au passager " + passagerId);
         }
 
-        // it must still be CONFIRMEE
         if (!reservation.estConfirmee()) {
             throw new BusinessRuleException("La réservation " + reservationId + " est déjà annulée");
         }
@@ -122,12 +121,11 @@ public class ReservationServiceImpl implements ReservationService {
         //at least 24 hours before departure (scenario 10)
         Trajet trajet = trajetRepository.findByIdForUpdate(reservation.getTrajet().getId()).orElseThrow(() -> new ResourceNotFoundException("Trajet introuvable"));
         LocalDateTime lastCancelTime = trajet.getDateDepart().minusHours(24);
+        // ila kan bgha idir cancel 9bel b 9el mn 24h he can't
         if (LocalDateTime.now().isAfter(lastCancelTime)) {
             throw new BusinessRuleException("Annulation impossible : le délai de 24 h avant le départ est dépassé");
         }
-
-        //cancel, and reopen the trip if it was full
-        reservation.annuler();
+        reservation.setStatut(StatutReservation.ANNULEE);
         reservationRepository.save(reservation);
 
         if (trajet.getStatut() == StatutTrajet.COMPLET) {

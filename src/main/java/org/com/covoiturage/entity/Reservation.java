@@ -46,8 +46,4 @@ public class Reservation {
     public boolean estConfirmee() {
         return statut == StatutReservation.CONFIRMEE;
     }
-
-    public void annuler() {
-        this.statut = StatutReservation.ANNULEE;
-    }
 }

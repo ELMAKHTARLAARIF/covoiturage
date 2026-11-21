@@ -32,6 +32,6 @@ public class PointArret {
     private BigDecimal prixDepuisDepart;
 
     public BigDecimal prixVers(PointArret descente) {
-        return descente.getPrixDepuisDepart().subtract(this.prixDepuisDepart);
+        return descente.getPrixDepuisDepart().subtract(this.getPrixDepuisDepart()); // this it mean pointMontee that call this method so like we passe pointMontee and do that pointDescent.prix - pointMontee.prix
     }
 }

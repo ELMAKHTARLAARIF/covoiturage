@@ -24,7 +24,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 
 
 
-    // used by trajet service
+    // used by trajet serviceTest
 
     // seats already booked on a trip
     @Query("""
